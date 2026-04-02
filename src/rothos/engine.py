@@ -141,3 +141,22 @@ def _generate_warnings(data: YearData, summary: YearSummary) -> list[str]:
             )
 
     return warnings
+
+
+def detect_gaps(summaries: list[YearSummary]) -> list[int]:
+    """Detect missing years between the earliest and latest tax year.
+
+    Args:
+        summaries: List of YearSummary in chronological order.
+
+    Returns:
+        List of missing tax years (sorted).
+    """
+    if len(summaries) < 2:
+        return []
+
+    present_years = {s.tax_year for s in summaries}
+    first = summaries[0].tax_year
+    last = summaries[-1].tax_year
+
+    return sorted(y for y in range(first + 1, last) if y not in present_years)

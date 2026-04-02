@@ -5,7 +5,7 @@ from pathlib import Path
 import click
 from rich.console import Console
 
-from rothos.engine import reconstruct_basis
+from rothos.engine import detect_gaps, reconstruct_basis
 from rothos.output import print_report, to_json
 from rothos.parsers.classifier import classify
 from rothos.parsers.irs_transcript import IrsTranscriptParser
@@ -78,9 +78,10 @@ def main(path: str, output_json: bool) -> None:
 
     # Reconstruct basis
     summaries = reconstruct_basis(year_data_list)
+    missing_years = detect_gaps(summaries)
 
     if output_json:
-        click.echo(to_json(summaries))
+        click.echo(to_json(summaries, missing_years=missing_years))
     else:
         if skipped:
             console.print(
@@ -88,4 +89,4 @@ def main(path: str, output_json: bool) -> None:
                 f"(not recognized as supported tax returns): "
                 f"{', '.join(skipped)}[/dim]"
             )
-        print_report(summaries, console)
+        print_report(summaries, console, missing_years=missing_years)
