@@ -1,0 +1,32 @@
+[project]
+name = "rothos"
+version = "0.1.0"
+description = "Reconstruct IRA basis history from tax return PDFs"
+readme = "README.md"
+requires-python = ">=3.11"
+license = {text = "MIT"}
+dependencies = [
+    "pymupdf>=1.24",
+    "click>=8.0",
+    "rich>=13.0",
+]
+
+[project.scripts]
+rothos = "rothos.cli:main"
+
+[build-system]
+requires = ["setuptools>=68", "wheel"]
+build-backend = "setuptools.build_meta"
+
+[tool.setuptools.packages.find]
+where = ["src"]
+
+[tool.pytest.ini_options]
+testpaths = ["tests"]
+pythonpath = ["src"]
+
+[project.optional-dependencies]
+dev = [
+    "pytest>=7.0",
+    "pytest-cov>=4.0",
+]
